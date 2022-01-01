@@ -28,8 +28,8 @@ public class ServicesController {
   iterable.forEach(servicesList::add);
   return servicesList;
  }
- @GetMapping("/servicess/{id}")
- public ResponseEntity<Services> getServicesById(@PathVariable(value = "id") Long id) {
+ @GetMapping("/services/{id}")
+ public ResponseEntity<Services> getServicesById(@PathVariable(value = "id") Integer id) {
   Optional<Services> services = servicesRepository.findById(id);
 return services.isPresent() ? new ResponseEntity<Services>(services.get(), HttpStatus.OK)
     : new ResponseEntity("No data found", HttpStatus.NOT_FOUND);
@@ -39,7 +39,7 @@ return services.isPresent() ? new ResponseEntity<Services>(services.get(), HttpS
   return servicesRepository.save(services);
  }
  @PutMapping("/services/{id}")
- public ResponseEntity<Services> updateservices(@PathVariable(value = "id") Long id, @RequestBody Services newservices) {
+ public ResponseEntity<Services> updateservices(@PathVariable(value = "id") Integer id, @RequestBody Services newservices) {
   Optional<Services> services = servicesRepository.findById(id);
  if (services.isPresent()) {
    Services prod = services.get();
@@ -53,7 +53,7 @@ return services.isPresent() ? new ResponseEntity<Services>(services.get(), HttpS
   }
  }
  @DeleteMapping("/services/{id}")
- public ResponseEntity<Services> deleteservices(@PathVariable(value = "id") Long id) {
+ public ResponseEntity<Services> deleteservices(@PathVariable(value = "id") Integer id) {
   Optional<Services> services = servicesRepository.findById(id);
   if (services.isPresent()) {
    servicesRepository.delete(services.get());

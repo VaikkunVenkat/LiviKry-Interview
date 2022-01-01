@@ -14,7 +14,7 @@ import java.util.Date;
 public class Services {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Integer id;
   @Column(name = "name")
   private String name;
   @Column(name = "url")
@@ -29,17 +29,16 @@ public class Services {
   @Temporal(TemporalType.TIMESTAMP)
   @LastModifiedDate
   private Date updated_at;
-  public Services() {}
-  public Services(Long id, String name, URL url, String status) {
+  public Services(Integer id, String name, URL url, String status) {
     this.id = id;
     this.name = name;
     this.url = url;
     this.status = status;
   }
-  public Long getId() {
+  public Integer getId() {
     return id;
   }
-  public void setId(Long id) {
+  public void setId(Integer id) {
     this.id = id;
   }
   public String getName() {
