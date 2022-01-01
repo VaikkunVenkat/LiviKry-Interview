@@ -1,5 +1,5 @@
 CREATE TABLE `services` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `created_at` datetime(6) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,

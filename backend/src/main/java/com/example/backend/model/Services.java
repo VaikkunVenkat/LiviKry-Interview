@@ -29,6 +29,7 @@ public class Services {
   @Temporal(TemporalType.TIMESTAMP)
   @LastModifiedDate
   private Date updated_at;
+  public Services() {}
   public Services(Integer id, String name, URL url, String status) {
     this.id = id;
     this.name = name;
