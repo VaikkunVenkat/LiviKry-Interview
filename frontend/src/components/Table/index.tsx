@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import useInterval from "react-useinterval";
 import MaterialTable from "material-table";
 import { servicesColums, servicesData as data } from "../../fixtures/services";
 import { IServicesData } from "../../fixtures/types";
@@ -7,12 +6,16 @@ import { IServicesData } from "../../fixtures/types";
 import Container from "../Container";
 import { API_URL } from "../../utils";
 
+interface ITableProps {
+  refresh: boolean
+}
+
 // TODO: Consider props for Table component
-const Table: React.FC<any> = () => {
+const Table: React.FC<ITableProps> = ({ refresh }) => {
   const [servicesData, setServicesData] = useState<IServicesData[]>(data);
   useEffect(() => {
     fetch(API_URL).then(res => res.json()).then((data: IServicesData[]) => setServicesData(data)).catch(error => alert(error.message));
-  }, []) 
+  }, [refresh]) 
   
   return (
     <Container>

@@ -13,3 +13,5 @@ export const emptyStringValidation = (input: string): boolean => {
 };
 
 export const API_URL = 'http://localhost:9090/api/services';
+
+export const DELAY_TIME = 60;
