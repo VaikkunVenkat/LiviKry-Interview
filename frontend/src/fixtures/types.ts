@@ -1,5 +1,7 @@
 export interface IServicesData {
-  date: Date,
+  id: Number,
+  created_at: Date,
+  updated_at: Date,
   name: string,
   url: string,
   status: string,

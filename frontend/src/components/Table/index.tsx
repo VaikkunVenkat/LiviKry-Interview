@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import useInterval from "react-useinterval";
 import MaterialTable from "material-table";
 import { servicesColums, servicesData as data } from "../../fixtures/services";
 import { IServicesData } from "../../fixtures/types";
@@ -10,9 +11,8 @@ import { API_URL } from "../../utils";
 const Table: React.FC<any> = () => {
   const [servicesData, setServicesData] = useState<IServicesData[]>(data);
   useEffect(() => {
-    fetch(API_URL).then(res => res.json()).then(data => console.log(data))
-  }, [])
-  // Add a useEffect that fectches the the data from the database onLoad. 
+    fetch(API_URL).then(res => res.json()).then((data: IServicesData[]) => setServicesData(data)).catch(error => alert(error.message));
+  }, []) 
   
   return (
     <Container>
