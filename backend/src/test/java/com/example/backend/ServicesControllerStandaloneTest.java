@@ -18,16 +18,11 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.BDDMockito.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.net.URL;
-import java.security.Provider.Service;
 import java.util.Optional;
-
-import static org.mockito.Mockito.*;
-
 
 @ExtendWith(MockitoExtension.class)
 public class ServicesControllerStandaloneTest {
@@ -118,7 +113,7 @@ public class ServicesControllerStandaloneTest {
                 )).andReturn().getResponse();
 
         // then
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(response.getContentAsString()).isEqualTo("");
     }
 

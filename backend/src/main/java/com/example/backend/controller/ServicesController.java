@@ -37,8 +37,9 @@ return services.isPresent() ? new ResponseEntity<Services>(services.get(), HttpS
     : new ResponseEntity("No data found", HttpStatus.NOT_FOUND);
  }
  @PostMapping("/services")
- public Services createServices(@RequestBody Services services) {
-  return servicesRepository.save(services);
+ public ResponseEntity<Services> createServices(@RequestBody Services services) {
+  Services prod = servicesRepository.save(services);
+  return ResponseEntity.created(null).body(prod);
  }
  @PutMapping("/services/{id}")
  public ResponseEntity<Services> updateservices(@PathVariable(value = "id") Integer id, @RequestBody Services newservices) {
