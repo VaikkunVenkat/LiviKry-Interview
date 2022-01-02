@@ -1,16 +1,14 @@
 package com.example.backend.services;
 
 import com.example.backend.model.Services;
-import com.fasterxml.jackson.databind.JsonNode;
+
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.http.HttpConnectTimeoutException;
 import java.time.Duration;
 import java.util.*;
 
