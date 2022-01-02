@@ -57,7 +57,7 @@ return services.isPresent() ? new ResponseEntity<Services>(services.get(), HttpS
   Optional<Services> services = servicesRepository.findById(id);
   if (services.isPresent()) {
    servicesRepository.delete(services.get());
-   return new ResponseEntity("services has been deleted successfully.", HttpStatus.OK);
+   return new ResponseEntity("services has been deleted successfully.", HttpStatus.NO_CONTENT);
   } else {
    return ResponseEntity.notFound().build();
   }
