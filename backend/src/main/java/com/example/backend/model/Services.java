@@ -5,7 +5,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener; import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.net.URL;
 import java.util.Date;
 @Entity
 @Table(name = "services")
@@ -18,7 +17,7 @@ public class Services {
   @Column(name = "name")
   private String name;
   @Column(name = "url")
-  private URL url;
+  private String url;
   @Column(name = "status")
   private String status;
   @Column(nullable = false, updatable = false)
@@ -30,7 +29,7 @@ public class Services {
   @LastModifiedDate
   private Date updated_at;
   public Services() {}
-  public Services(Integer id, String name, URL url, String status) {
+  public Services(Integer id, String name, String url, String status) {
     this.id = id;
     this.name = name;
     this.url = url;
@@ -48,10 +47,10 @@ public class Services {
   public void setName(String name) {
     this.name = name;
   }
-  public URL getUrl() {
+  public String getUrl() {
     return url;
   }
-  public void setUrl(URL url) {
+  public void setUrl(String url) {
     this.url = url;
   }
   public String getStatus() {

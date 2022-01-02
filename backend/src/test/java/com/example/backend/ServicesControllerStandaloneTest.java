@@ -2,6 +2,7 @@ package com.example.backend;
 import com.example.backend.controller.ServicesController;
 import com.example.backend.model.Services;
 import com.example.backend.repository.ServicesRepository;
+import com.example.backend.services.RestService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +22,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.mockito.BDDMockito.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.net.URL;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,13 +39,14 @@ public class ServicesControllerStandaloneTest {
     @InjectMocks
     private ServicesController servicesController;
 
+        @Mock
+    private RestService restService;
+
     // This object will be magically initialized by the initFields method below.
     private JacksonTester<Services> jsonServices;
 
     @BeforeEach
     public void setup() {
-        // We would need this line if we would not use the MockitoExtension
-        // MockitoAnnotations.initMocks(this);
         // Here we can't use @AutoConfigureJsonTesters because there isn't a Spring context
         JacksonTester.initFields(this, new ObjectMapper());
         // MockMvc standalone approach
@@ -53,9 +54,35 @@ public class ServicesControllerStandaloneTest {
     }
 
     @Test
+    public void canRefreshAPI() throws Exception {
+      Services service1 = new Services(1, "name", "http://goodapi.com", "OK");
+      Services service2 = new Services(2, "happy", "http://happyAPI.com", "OK");
+      given(servicesRepository.findAll())
+      .willReturn(new ArrayList<Services>(Arrays.asList(service1, service2)));
+
+      Services service2Fail = new Services(2, "happy", "http://happyAPI.com", "FAIL");
+      
+      
+      given(restService.getServiceStatuses(new ArrayList<Services>(Arrays.asList(service1, service2))))
+        .willReturn(new ArrayList<Services>(Arrays.asList(service1, service2Fail)));
+        // when
+        MockHttpServletResponse response = mvc.perform(
+                get("/api/refreshServices/")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        // then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentType()).isEqualTo("application/json");
+        Services[] responseBodyList = new ObjectMapper().readValue(response.getContentAsString(), Services[].class);  
+        assertThat(responseBodyList.length).isEqualTo(2);
+        String statusFail = service2Fail.getStatus();
+        assertThat(responseBodyList[1].getStatus()).isEqualTo(statusFail);
+    }
+    @Test
     public void canRetrieveByIdWhenExists() throws Exception {
         // given
-        Services service = new Services(1, "name", new URL("http://goodapi.com"), "good");
+        Services service = new Services(1, "name", "http://goodapi.com", "OK");
         given(servicesRepository.findById(1))
           .willReturn(Optional.of(service));
 
@@ -87,8 +114,8 @@ public class ServicesControllerStandaloneTest {
 
    @Test
     public void canRetrieveAllServices() throws Exception {
-      Services service1 = new Services(1, "name", new URL("http://goodapi.com"), "good");
-      Services service2 = new Services(2, "happy", new URL("http://happyAPI.com"), "good");
+      Services service1 = new Services(1, "name", "http://goodapi.com", "OK");
+      Services service2 = new Services(2, "happy", "http://happyAPI.com", "OK");
       given(servicesRepository.findAll())
         .willReturn(new ArrayList<Services>(Arrays.asList(service1, service2)));
         // when
@@ -106,7 +133,7 @@ public class ServicesControllerStandaloneTest {
     @Test
     public void canCreateANewService() throws Exception {
         // when
-        Services service = new Services(1, "name", new URL("http://goodapi.com"), "good");
+        Services service = new Services(1, "name", "http://goodapi.com", "OK");
         MockHttpServletResponse response = mvc.perform(
                 post("/api/services").contentType(MediaType.APPLICATION_JSON).content(
                         jsonServices.write(service).getJson()
@@ -120,7 +147,7 @@ public class ServicesControllerStandaloneTest {
     @Test
     public void canDeleteAService() throws Exception {
         // given
-        Services service = new Services(1, "name", new URL("http://goodapi.com"), "good");
+        Services service = new Services(1, "name", "http://goodapi.com", "OK");
         given(servicesRepository.findById(1))
           .willReturn(Optional.of(service));
 
@@ -138,8 +165,8 @@ public class ServicesControllerStandaloneTest {
     @Test
     public void canUpdateAService() throws Exception {
 
-      Services service = new Services(1, "name", new URL("http://goodapi.com"), "good");
-      Services serviceNew = new Services(1, "updatedName", new URL("http://updatedGoodAPI.com"), "good");
+      Services service = new Services(1, "name", "http://goodapi.com", "OK");
+      Services serviceNew = new Services(1, "updatedName", "http://updatedGoodAPI.com", "OK");
       given(servicesRepository.findById(1))
         .willReturn(Optional.of(service));
         // when

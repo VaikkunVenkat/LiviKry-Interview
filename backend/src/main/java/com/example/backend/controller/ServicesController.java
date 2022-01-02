@@ -33,14 +33,12 @@ public class ServicesController {
   
   
   @GetMapping("/refreshServices")
-  public HttpStatus refreshAllServices() {
+  public List<Services> refreshAllServices() {
     List<Services> servicesList = new ArrayList<Services>();
     Iterable<Services> iterable = servicesRepository.findAll();
-    // pass list of all services from db into getServiceStatuses function - return iterable of services list.
-    HttpStatus status = restService.getServiceStatuses();
-    // return iterable of Services.
-    return status;
-    
+    Iterable<Services> iterableUpdated = restService.getServiceStatuses(iterable);
+    iterableUpdated.forEach(servicesList::add);
+    return servicesList; 
   }
 
   @GetMapping("/services")
