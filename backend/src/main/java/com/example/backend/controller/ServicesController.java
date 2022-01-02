@@ -15,54 +15,78 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.example.backend.model.Services;
 import com.example.backend.repository.ServicesRepository;
+import com.example.backend.services.RestService;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api")
 public class ServicesController {
- @Autowired
- ServicesRepository servicesRepository;
- @GetMapping("/services")
- public List<Services> getAllServices() {
-  final List<Services> servicesList = new ArrayList<Services>();
-  Iterable<Services> iterable = servicesRepository.findAll();
-  iterable.forEach(servicesList::add);
-  return servicesList;
- }
- @GetMapping("/services/{id}")
- public ResponseEntity<Services> getServicesById(@PathVariable(value = "id") Integer id) {
-  Optional<Services> services = servicesRepository.findById(id);
-return services.isPresent() ? new ResponseEntity<Services>(services.get(), HttpStatus.OK)
-    : new ResponseEntity("No data found", HttpStatus.NOT_FOUND);
- }
- @PostMapping("/services")
- public ResponseEntity<Services> createServices(@RequestBody Services services) {
-  Services prod = servicesRepository.save(services);
-  return ResponseEntity.created(null).body(prod);
- }
- @PutMapping("/services/{id}")
- public ResponseEntity<Services> updateservices(@PathVariable(value = "id") Integer id, @RequestBody Services newservices) {
-  Optional<Services> services = servicesRepository.findById(id);
- if (services.isPresent()) {
-   Services prod = services.get();
-   prod.setName(newservices.getName());
-   prod.setUrl(newservices.getUrl());
-   prod.setStatus(newservices.getStatus());
-   prod = servicesRepository.save(prod);
-   return ResponseEntity.ok().body(prod);
-  } else {
-   return ResponseEntity.notFound().build();
+
+  @Autowired
+  ServicesRepository servicesRepository;
+
+  @Autowired
+  RestService restService;
+  
+  
+  @GetMapping("/refreshServices")
+  public HttpStatus refreshAllServices() {
+    List<Services> servicesList = new ArrayList<Services>();
+    Iterable<Services> iterable = servicesRepository.findAll();
+    // pass list of all services from db into getServiceStatuses function - return iterable of services list.
+    HttpStatus status = restService.getServiceStatuses();
+    // return iterable of Services.
+    return status;
+    
   }
- }
- @DeleteMapping("/services/{id}")
- public ResponseEntity<Services> deleteservices(@PathVariable(value = "id") Integer id) {
-  Optional<Services> services = servicesRepository.findById(id);
+
+  @GetMapping("/services")
+  public List<Services> getAllServices() {
+    List<Services> servicesList = new ArrayList<Services>();
+    Iterable<Services> iterable = servicesRepository.findAll();
+    iterable.forEach(servicesList::add);
+    return servicesList;
+  }
+
+  @GetMapping("/services/{id}")
+  public ResponseEntity<Services> getServicesById(@PathVariable(value = "id") Integer id) {
+    Optional<Services> services = servicesRepository.findById(id);
+  return services.isPresent() ? new ResponseEntity<Services>(services.get(), HttpStatus.OK)
+      : new ResponseEntity("No data found", HttpStatus.NOT_FOUND);
+  }
+
+  @PostMapping("/services")
+  public ResponseEntity<Services> createServices(@RequestBody Services services) {
+    Services prod = servicesRepository.save(services);
+    return ResponseEntity.created(null).body(prod);
+  }
+
+  @PutMapping("/services/{id}")
+  public ResponseEntity<Services> updateservices(@PathVariable(value = "id") Integer id, @RequestBody Services newservices) {
+    Optional<Services> services = servicesRepository.findById(id);
   if (services.isPresent()) {
-   servicesRepository.delete(services.get());
-   return new ResponseEntity("services has been deleted successfully.", HttpStatus.NO_CONTENT);
-  } else {
-   return ResponseEntity.notFound().build();
+    Services prod = services.get();
+    prod.setName(newservices.getName());
+    prod.setUrl(newservices.getUrl());
+    prod.setStatus(newservices.getStatus());
+    prod = servicesRepository.save(prod);
+    return ResponseEntity.ok().body(prod);
+    } else {
+    return ResponseEntity.notFound().build();
+    }
   }
- }
+
+  @DeleteMapping("/services/{id}")
+  public ResponseEntity<Services> deleteservices(@PathVariable(value = "id") Integer id) {
+    Optional<Services> services = servicesRepository.findById(id);
+    if (services.isPresent()) {
+    servicesRepository.delete(services.get());
+    return new ResponseEntity("services has been deleted successfully.", HttpStatus.NO_CONTENT);
+    } else {
+    return ResponseEntity.notFound().build();
+    }
+  }
 }
