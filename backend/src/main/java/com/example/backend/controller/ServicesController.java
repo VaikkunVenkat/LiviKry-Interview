@@ -71,7 +71,7 @@ public class ServicesController {
     Services prod = services.get();
     prod.setName(newservices.getName());
     prod.setUrl(newservices.getUrl());
-    prod.setStatus(newservices.getStatus());
+    prod.setStatus(restService.fetchServiceWithStatus(newservices).getStatus());
     prod = servicesRepository.save(prod);
     return ResponseEntity.ok().body(prod);
     } else {

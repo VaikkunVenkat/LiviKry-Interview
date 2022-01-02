@@ -8,6 +8,10 @@ export const isValidURL = (url: string): boolean => {
   return pattern.test(url);
 }
 
+export const filterArrObjects = (arr: any[], obj: any, property: string): any[] => {
+  return arr.filter((arrObj) => arrObj[property] !== obj?.[property])
+}
+
 export const emptyStringValidation = (input: string): boolean => {
   return input !== '' && input !== undefined;
 };
