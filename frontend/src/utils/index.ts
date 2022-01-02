@@ -14,4 +14,6 @@ export const emptyStringValidation = (input: string): boolean => {
 
 export const API_URL = 'http://localhost:9090/api/services';
 
+export const APP_REFRESH_URL = 'http://localhost:9090/api/refreshServices';
+
 export const DELAY_TIME = 60;
