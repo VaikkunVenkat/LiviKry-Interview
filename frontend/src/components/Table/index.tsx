@@ -1,7 +1,6 @@
 import React from "react";
 import MaterialTable from "material-table";
 import { servicesColums } from "../../fixtures/services";
-import { IServicesData } from "../../fixtures/types";
 import { ITableProps } from "./types";
 
 
@@ -16,9 +15,9 @@ const Table: React.FC<ITableProps> = ({ createService, updateService, deleteServ
         exportButton: true,
       }}
       editable={{
-        onRowAdd: (newData: IServicesData) => createService(newData),
-        onRowUpdate: (newData: IServicesData, oldData: any) => updateService(newData, oldData),
-        onRowDelete: (oldData: IServicesData) => deleteService(oldData)
+        onRowAdd: createService,
+        onRowUpdate: updateService,
+        onRowDelete: deleteService
       }}
       localization={{
         header : {
