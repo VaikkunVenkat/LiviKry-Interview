@@ -60,7 +60,7 @@ const Container: React.FC<IContainerProps> = ({ children, refresh }) => {
     })
   }
   return (
-    <div>
+    <div id="container">
       {children({ createService, updateService, deleteService, servicesData })}
     </div>
   );
