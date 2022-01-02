@@ -15,15 +15,16 @@ const Container: React.FC<IContainerProps> = ({ children, refresh }) => {
   const createService = (newData: IServicesData): Promise<any> => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        console.log(`Create input: ${JSON.stringify(newData)}`)
         fetch(API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          // TODO: pass in servicesData to POST Body
-          body: JSON.stringify({})
-      })
-        /* setData([...data, newData]); */
-        resolve('');
+          body: JSON.stringify(newData)
+        })
+          .then(response => response.json())
+          .then(data => {
+            setServicesData([...servicesData, data]);
+          });
+        resolve(servicesData);
       }, 1000);
     })
   }
@@ -47,7 +48,7 @@ const Container: React.FC<IContainerProps> = ({ children, refresh }) => {
       }, 1000);
     })
   }
-
+  console.log(servicesData);
   return (
     <div>
       {children({ createService, updateService, deleteService, servicesData })}
