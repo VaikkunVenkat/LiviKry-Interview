@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,9 +58,10 @@ public class ServicesController {
   }
 
   @PostMapping("/services")
-  public ResponseEntity<Services> createServices(@RequestBody Services services) {
-    Services prod = servicesRepository.save(services);
-    return ResponseEntity.created(null).body(prod);
+  public ResponseEntity<Services> createServices(@RequestBody Services service) {
+    Services serviceWithStatus = restService.fetchServiceWithStatus(service);
+    Services prod = servicesRepository.save(serviceWithStatus);
+    return ResponseEntity.created(URI.create(String.format("/services/%s", serviceWithStatus.getName()))).body(prod);
   }
 
   @PutMapping("/services/{id}")

@@ -40,4 +40,17 @@ public class RestService {
 
       return iterable;
   }
+
+  public Services fetchServiceWithStatus(Services service) {
+    // setup headers
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+    HttpEntity<String> entity = new HttpEntity<>(headers);
+
+    ResponseEntity<Void> response = this.restTemplate.exchange(service.getUrl(), HttpMethod.GET, entity, Void.class);
+    service.setStatus(response.getStatusCode().getReasonPhrase());
+
+    return service;
+  }
 }
