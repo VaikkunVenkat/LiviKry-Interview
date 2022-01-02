@@ -11,3 +11,5 @@ export const isValidURL = (url: string): boolean => {
 export const emptyStringValidation = (input: string): boolean => {
   return input !== '' && input !== undefined;
 };
+
+export const API_URL = 'http://localhost:9090/api/services';
