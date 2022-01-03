@@ -55,4 +55,5 @@ You can run the unit test suite with `npm test` and the e2e cypress suite with `
 
 Hopefully at this point, you should have the docker container running the MySQL database running. the backend server running as well as the front-end!
 
+In terms of adding in API services to check out manually, I've found a nice list of apis online [here](https://mixedanalytics.com/blog/list-actually-free-open-no-auth-needed-apis/).
 
