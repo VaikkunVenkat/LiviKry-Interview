@@ -51,7 +51,7 @@ npm install
 npm start
 ```
 
-You can run the unit test suite with `npm test` and the e2e cypress suite with `npm cypress:run`
+You can run the unit test suite in interactive watch mode with `npm test` (press `a` to run all tests) and the end-to-end cypress suite with `npm run cypress:run`
 
 Hopefully at this point, you should have the docker container running the MySQL database running. the backend server running as well as the front-end!
 
