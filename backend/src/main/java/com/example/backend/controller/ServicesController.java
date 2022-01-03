@@ -61,7 +61,7 @@ public class ServicesController {
   public ResponseEntity<Services> createServices(@RequestBody Services service) {
     Services serviceWithStatus = restService.fetchServiceWithStatus(service);
     Services prod = servicesRepository.save(serviceWithStatus);
-    return ResponseEntity.created(URI.create(String.format("/services/%s", serviceWithStatus.getName()))).body(prod);
+    return ResponseEntity.created(URI.create(String.format("/services/%s", serviceWithStatus.getId()))).body(prod);
   }
 
   @PutMapping("/services/{id}")
